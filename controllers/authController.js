@@ -14,11 +14,11 @@ const register = async (req, res) => {
     const newUser = await User.create({ username, email, password: hashedPassword });
 
     // Отправляем email с подтверждением регистрации
-    const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    const verificationUrl = `http://${process.env.ADRESS}:${process.env.PORT}/auth/verify/${token}`;
-    await sendEmail(email, 'Подтвердите регистрацию', `
-        Пожалуйста, подтвердите вашу регистрацию, нажав - ${verificationUrl}"
-    `);
+    // const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // const verificationUrl = `http://${process.env.ADRESS}:${process.env.PORT}/auth/verify/${token}`;
+    // await sendEmail(email, 'Подтвердите регистрацию', `
+    //     Пожалуйста, подтвердите вашу регистрацию, нажав - ${verificationUrl}"
+    // `);
     res.status(201).json({ message: 'Пользователь зарегистрирован, пожалуйста, проверьте вашу почту для подтверждения' });
   } catch (error) {
     res.status(500).json({ message: 'Ошибка при регистрации пользователя', error });
@@ -34,7 +34,7 @@ const login = async (req, res) => {
     }
 
     // Проверка подтверждения email
-    if (!user.isVerified) return res.status(400).json({ message: 'Email не подтвержден' });
+    // if (!user.isVerified) return res.status(400).json({ message: 'Email не подтвержден' });
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token, user });
